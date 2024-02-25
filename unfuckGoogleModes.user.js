@@ -32,6 +32,7 @@ if (location.hostname.startsWith("www.google.") && location.pathname === "/searc
 
     let main = () => {
         let target = document.querySelector('.main [role=navigation] [role=navigation]') || // regular search
+            document.querySelector('.main [role=navigation] h1~div')?.parentElement || // again but for Other Google TM
             document.querySelector('h1:has(+a)')?.parentElement || // images
             document.querySelector('.main [role=navigation] style + style + div') // books
         if (target.innerHTML.indexOf("<!-- replaced -->") >= 0) return;
@@ -51,7 +52,6 @@ if (location.hostname.startsWith("www.google.") && location.pathname === "/searc
         try {
             target.innerHTML = trustedTypes.createPolicy("forceInner", {createHTML: e => e}).createHTML(html)
         } catch(e) {
-            console.error(e)
             target.innerHTML = html
         }
     }
